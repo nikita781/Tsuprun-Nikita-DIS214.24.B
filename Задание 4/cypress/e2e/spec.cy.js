@@ -4,6 +4,19 @@ describe('template spec', () => {
     cy.intercept('POST', 'https://events.backtrace.io/**', { statusCode: 200 }).as('backtrace');
   })
 
+  it('cy.title() - get the title', () => {
+    // https://on.cypress.io/title
+    cy.title().should('include', 'Интернет-магазин ЦУМ: одежда, обувь и аксессуары ведущих мировых брендов')
+  });
+
+  it('cy.getCookies() - get browser cookies for the current domain', () => {
+    cy.getCookies().should('not.be.empty').should((cookies) => {
+      // cy.getCookies() yields an array of cookies
+      const phoneCookie = cookies.find(cookie => cookie.name === '_calltracking')
+      expect(phoneCookie).to.have.property('value', '+7 800 500 80 00,+7 495 933 73 00')
+    })
+  })
+
   it('Загружается главная страница и отображаются главные блоки', () => {
     cy.contains('Новые поступления')
         .should('be.visible');
@@ -90,7 +103,7 @@ describe('template spec', () => {
         .contains('Хлопковое худи')
         .click();
 
-    cy.get('.Controlls__buttonsWrapper___lF9QK')
+    cy.get('.Controlls__buttonsWrapper___vQs5V')
         .find('button')
         .contains('Добавить в корзину')
         .click();
@@ -120,10 +133,10 @@ describe('template spec', () => {
         .find('.Body__body___SzCKz')
         .find('.Top__bodyTopLink___fW7Oi')
         .find('.Title__title___ujUQX')
-        .contains('Худи из кашемира и шелка')
+        .contains('Хлопковое худи')
         .click();
 
-    cy.get('.Controlls__buttonsWrapper___lF9QK')
+    cy.get('.Controlls__buttonsWrapper___vQs5V')
         .find('button')
         .contains('Добавить в корзину')
         .click();
@@ -143,10 +156,11 @@ describe('template spec', () => {
         .find('[for="strategy-segment-1"]')
         .click();
 
-    cy.get('.PayButtons__btn___MT8wD')
+    cy.get('.Controls__sbpPayButton___sixsD')
         .click();
 
-    cy.get('.style_input__502ff58e')
+    cy.get('.contacts__phoneInput___wPVob')
+        .find('.style_input__502ff58e')
         .type('1111111111');
 
     cy.get('.Approve__modalPayBtn___E7Kqm')
